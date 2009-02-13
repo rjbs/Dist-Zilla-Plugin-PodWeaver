@@ -4,7 +4,9 @@ use Test::More;
 use File::Find::Rule;
 
 my @files = File::Find::Rule->name('*.pm')->in('lib');
-plan tests => @files - 1;
+plan tests => @files;
+
+ok(1, "hey, at least we compiled, right?");
 
 for (@files) {
   next if /Tutorial.pm/;

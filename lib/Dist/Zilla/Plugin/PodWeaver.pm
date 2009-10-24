@@ -63,6 +63,14 @@ sub munge_pod {
   my $pod_document = Pod::Elemental->read_string($pod_str);
   Pod::Elemental::Transformer::Pod5->new->transform_node($pod_document);
 
+  # XXX: This is really stupid. -- rjbs, 2009-10-24
+  $pod_document->children->keys->reverse->each_value(sub {
+    my ($i, $para) = ($_, $pod_document->children->[$_]);
+    splice @{ $pod_document->children }, $i, 1
+      if  $para->isa('Pod::Elemental::Element::Pod5::Nonpod')
+      and $para->content !~ /\S/;
+  });
+
   my $nester = Pod::Elemental::Transformer::Nester->new({
     top_selector => s_command([ qw(head1 method attr) ]),
     content_selectors => [

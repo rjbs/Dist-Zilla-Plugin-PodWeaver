@@ -1,4 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
+3.092971  2009-10-24
+          major rewrite to use Pod::Weaver 3
+
 2.000     2009-02-12
           first release, split out of the Dist-Zilla distribution

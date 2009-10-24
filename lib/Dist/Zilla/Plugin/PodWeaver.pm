@@ -72,7 +72,7 @@ sub munge_pod {
   });
 
   my $nester = Pod::Elemental::Transformer::Nester->new({
-    top_selector => s_command([ qw(head1 method attr) ]),
+    top_selector => s_command([ qw(head1) ]),
     content_selectors => [
       s_flat,
       s_command( [ qw(head2 head3 head4 over item back) ]),

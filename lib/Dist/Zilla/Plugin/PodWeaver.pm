@@ -3,8 +3,16 @@ package Dist::Zilla::Plugin::PodWeaver;
 use Moose;
 use Moose::Autobox;
 use List::MoreUtils qw(any);
-use Pod::Weaver;
+use Pod::Weaver 3;
 with 'Dist::Zilla::Role::FileMunger';
+
+use namespace::autoclean;
+
+use PPI;
+use Pod::Elemental;
+use Pod::Elemental::Transformer::Pod5;
+use Pod::Elemental::Transformer::Nester;
+use Pod::Elemental::Selectors -all;
 
 =head1 WARNING
 
@@ -36,17 +44,64 @@ sub munge_file {
 sub munge_pod {
   my ($self, $file) = @_;
 
-  my $new_content = Pod::Weaver->munge_pod_string(
-    $file->content,
-    {
-      filename => $file->name,
-      version  => $self->zilla->version,
-      license  => $self->zilla->license,
-      authors  => $self->zilla->authors,
-    },
-  );
+  my $content = $file->content;
+  my $ppi_document = PPI::Document->new(\$content);
+  my @pod_tokens = map {"$_"} @{ $ppi_document->find('PPI::Token::Pod') || [] };
+  $ppi_document->prune('PPI::Token::Pod');
 
-  $file->content($new_content) if $new_content;
+  if ($ppi_document->serialize =~ /^=[a-z]/m) {
+    $self->log(
+      sprintf "can't invoke %s on %s: there is POD inside string literals",
+        $self->plugin_name, $file->name
+    );
+  }
+
+  # TODO: I should add a $weaver->weave_* like the Linewise methods to take the
+  # input, get a Document, perform the stock transformations, and then weave.
+  # -- rjbs, 2009-10-24
+  my $pod_str = join "\n", @pod_tokens;
+  my $pod_document = Pod::Elemental->read_string($pod_str);
+  Pod::Elemental::Transformer::Pod5->new->transform_node($pod_document);
+
+  my $nester = Pod::Elemental::Transformer::Nester->new({
+    top_selector => s_command([ qw(head1 method attr) ]),
+    content_selectors => [
+      s_flat,
+      s_command( [ qw(head2 head3 head4 over item back) ]),
+    ],
+  });
+
+  $nester->transform_node($pod_document);
+
+  my $weaver  = Pod::Weaver->new_with_default_config;
+  my $new_doc = Pod::Weaver->weave_document({
+    pod_document => $pod_document,
+    ppi_document => $ppi_document,
+    # filename => $file->name,
+    version  => $self->zilla->version,
+    license  => $self->zilla->license,
+    authors  => $self->zilla->authors,
+  });
+
+  my $new_pod = $new_doc->as_pod_string;
+
+  my $end = do {
+    my $end_elem = $ppi_document->find('PPI::Statement::Data')
+                || $ppi_document->find('PPI::Statement::End');
+    join q{}, @{ $end_elem || [] };
+  };
+
+  $ppi_document->prune('PPI::Statement::End');
+  $ppi_document->prune('PPI::Statement::Data');
+
+  my $new_perl = $ppi_document->serialize;
+
+  $content = $end
+           ? "$new_perl\n\n$new_pod\n\n$end"
+           : "$new_perl\n__END__\n$new_pod\n";
+
+  $file->content($content);
+
   return;
 }
 

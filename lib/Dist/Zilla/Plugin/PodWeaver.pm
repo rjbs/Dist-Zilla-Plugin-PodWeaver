@@ -74,7 +74,7 @@ sub munge_pod {
   $nester->transform_node($pod_document);
 
   my $weaver  = Pod::Weaver->new_with_default_config;
-  my $new_doc = Pod::Weaver->weave_document({
+  my $new_doc = $weaver->weave_document({
     pod_document => $pod_document,
     ppi_document => $ppi_document,
     # filename => $file->name,

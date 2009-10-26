@@ -28,7 +28,23 @@ don't expect it to do anything but bring sorrow to you and your people.
 PodWeaver is a work in progress, which rips apart your kinda-POD and
 reconstructs it as boring old real POD.
 
+=head1 CONFIGURATION
+
+If a file matching C<./weaver.*> exists, Pod::Weaver will be told to look for
+configuration in the current directory.  Otherwise, it will use the default
+configuration.
+
 =cut
+
+sub _weaver {
+  my ($self) = @_;
+
+  if (glob('weaver.*')) {
+    return Pod::Weaver->new_from_config;
+  } else {
+    return Pod::Weaver->new_with_default_config;
+  }
+}
 
 sub munge_file {
   my ($self, $file) = @_;
@@ -81,7 +97,7 @@ sub munge_pod {
 
   $nester->transform_node($pod_document);
 
-  my $weaver  = Pod::Weaver->new_with_default_config;
+  my $weaver  = $self->_weaver;
   my $new_doc = $weaver->weave_document({
     pod_document => $pod_document,
     ppi_document => $ppi_document,

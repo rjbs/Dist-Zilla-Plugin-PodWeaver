@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
+3.093000  2009-10-27
+          much of the generic prep work has been moved to the core @CorePrep
+
 3.092990  2009-10-26
           if a ./weaver.* file exists, try to use Pod::Weaver->new_from_config
 

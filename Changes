@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
+3.093001  2009-10-27
+          config_plugin to allow '@Whatever' to configure your weaver
+
 3.093000  2009-10-27
           much of the generic prep work has been moved to the core @CorePrep
 

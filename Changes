@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
+3.093020  2009-10-29
+          refactor much of the guts to Pod::Elemental::PerlMunger
+
 3.093001  2009-10-27
           config_plugin to allow '@Whatever' to configure your weaver
 

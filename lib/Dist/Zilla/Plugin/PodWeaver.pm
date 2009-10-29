@@ -77,58 +77,42 @@ sub munge_file {
   return;
 }
 
-sub munge_pod {
-  my ($self, $file) = @_;
-
-  my $content = $file->content;
-  my $ppi_document = PPI::Document->new(\$content);
-  my @pod_tokens = map {"$_"} @{ $ppi_document->find('PPI::Token::Pod') || [] };
-  $ppi_document->prune('PPI::Token::Pod');
-
-  if ($ppi_document->serialize =~ /^=[a-z]/m) {
-    $self->log(
-      sprintf "can't invoke %s on %s: there is POD inside string literals",
-        $self->plugin_name, $file->name
-    );
-  }
-
-  # TODO: I should add a $weaver->weave_* like the Linewise methods to take the
-  # input, get a Document, perform the stock transformations, and then weave.
-  # -- rjbs, 2009-10-24
-  my $pod_str = join "\n", @pod_tokens;
-  my $pod_document = Pod::Elemental->read_string($pod_str);
+sub munge_perl_string {
+  my ($self, $doc, $arg) = @_;
 
   my $weaver  = $self->_weaver;
   my $new_doc = $weaver->weave_document({
-    pod_document => $pod_document,
-    ppi_document => $ppi_document,
-    # filename => $file->name,
-    version  => $self->zilla->version,
-    license  => $self->zilla->license,
-    authors  => $self->zilla->authors,
+    %$arg,
+    pod_document => $doc->{pod},
+    ppi_document => $doc->{ppi},
   });
 
-  my $new_pod = $new_doc->as_pod_string;
+  return {
+    pod => $new_doc,
+    ppi => $doc->{ppi},
+  }
+}
 
-  my $end = do {
-    my $end_elem = $ppi_document->find('PPI::Statement::Data')
-                || $ppi_document->find('PPI::Statement::End');
-    join q{}, @{ $end_elem || [] };
-  };
+sub munge_pod {
+  my ($self, $file) = @_;
 
-  $ppi_document->prune('PPI::Statement::End');
-  $ppi_document->prune('PPI::Statement::Data');
+  my $content     = $file->content;
+  my $new_content = $self->munge_perl_string(
+    $file->content,
+    {
+      filename => $file->name,
+      version  => $self->zilla->version,
+      license  => $self->zilla->license,
+      authors  => $self->zilla->authors,
+    },
+  );
 
-  my $new_perl = $ppi_document->serialize;
-
-  $content = $end
-           ? "$new_perl\n\n$new_pod\n\n$end"
-           : "$new_perl\n__END__\n$new_pod\n";
-
-  $file->content($content);
+  $file->content($new_content);
 
   return;
 }
+
+with 'Pod::Elemental::PerlMunger';
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

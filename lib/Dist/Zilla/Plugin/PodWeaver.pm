@@ -44,6 +44,8 @@ Otherwise, it will use the default configuration.
 sub _weaver {
   my ($self) = @_;
 
+  my @files = glob('weaver.*');
+
   if ($self->config_plugin) {
     my $assembler = Pod::Weaver::Config::Assembler->new;
 
@@ -54,7 +56,7 @@ sub _weaver {
     $assembler->end_section;
 
     return Pod::Weaver->new_from_config_sequence($assembler->sequence);
-  } elsif (glob('weaver.*')) {
+  } elsif (@files) {
     return Pod::Weaver->new_from_config;
   } else {
     return Pod::Weaver->new_with_default_config;

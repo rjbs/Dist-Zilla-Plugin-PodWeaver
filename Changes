@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
+3.093170  2009-11-13
+          fix a bug that caused config files to sometimes be ignored
+          (reported by Jerome Quelin)
+
 3.093020  2009-10-29
           refactor much of the guts to Pod::Elemental::PerlMunger
 

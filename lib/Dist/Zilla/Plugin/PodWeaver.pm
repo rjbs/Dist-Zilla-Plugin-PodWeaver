@@ -1,5 +1,5 @@
 package Dist::Zilla::Plugin::PodWeaver;
-# ABSTRACT: do horrible things to POD, producing better docs
+# ABSTRACT: weave your Pod together from configuration and Dist::Zilla
 use Moose;
 use Moose::Autobox;
 use List::MoreUtils qw(any);
@@ -102,6 +102,7 @@ sub munge_pod {
   my $new_content = $self->munge_perl_string(
     $file->content,
     {
+      zilla    => $self->zilla,
       filename => $file->name,
       version  => $self->zilla->version,
       license  => $self->zilla->license,

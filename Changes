@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+
+3.093320  2009-11-28 22:10:59 America/New_York
           pass the zilla into the weaver
 
 3.093170  2009-11-13

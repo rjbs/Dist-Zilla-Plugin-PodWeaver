@@ -41,7 +41,18 @@ Otherwise, it will use the default configuration.
 
 =cut
 
-sub _weaver {
+=method weaver
+
+This method returns the Pod::Weaver object to be used.  The current
+implementation builds a new weaver on each invocation, because one or two core
+Pod::Weaver plugins cannot be trusted to handle multiple documents per plugin
+instance.  In the future, when that is fixed, this may become an accessor of an
+attribute with a builder.  Until this is clearer, use caution when modifying
+this method in subclasses.
+
+=cut
+
+sub weaver {
   my ($self) = @_;
 
   my @files = glob('weaver.*');
@@ -82,7 +93,7 @@ sub munge_file {
 sub munge_perl_string {
   my ($self, $doc, $arg) = @_;
 
-  my $weaver  = $self->_weaver;
+  my $weaver  = $self->weaver;
   my $new_doc = $weaver->weave_document({
     %$arg,
     pod_document => $doc->{pod},

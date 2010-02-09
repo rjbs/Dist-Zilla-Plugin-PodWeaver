@@ -57,6 +57,8 @@ sub weaver {
 
   my @files = glob('weaver.*');
 
+  my $arg = { logger => $self };
+
   if ($self->config_plugin) {
     my $assembler = Pod::Weaver::Config::Assembler->new;
 
@@ -66,11 +68,11 @@ sub weaver {
     $assembler->change_section( $self->config_plugin );
     $assembler->end_section;
 
-    return Pod::Weaver->new_from_config_sequence($assembler->sequence);
+    return Pod::Weaver->new_from_config_sequence($assembler->sequence, $arg);
   } elsif (@files) {
-    return Pod::Weaver->new_from_config;
+    return Pod::Weaver->new_from_config($arg);
   } else {
-    return Pod::Weaver->new_with_default_config;
+    return Pod::Weaver->new_with_default_config($arg);
   }
 }
 

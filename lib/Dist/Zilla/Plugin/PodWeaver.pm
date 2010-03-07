@@ -84,6 +84,8 @@ has config_plugin => (
 sub munge_file {
   my ($self, $file) = @_;
 
+  $self->log_debug([ 'weaving pod in %s', $file->name ]);
+
   return
     unless $file->name =~ /\.(?:pm|pod)$/i
     and ($file->name !~ m{/} or $file->name =~ m{^lib/});

@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
 
+3.100680  2010-03-09 23:34:17 America/New_York
+          improve how we pass extra config to Pod::Weaver; fixes logger
+
 3.100650  2010-03-06 23:25:07 America/New_York
 
 3.093321  2009-11-28 22:24:14 America/New_York

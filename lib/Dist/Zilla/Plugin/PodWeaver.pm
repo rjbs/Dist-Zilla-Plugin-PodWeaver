@@ -46,7 +46,7 @@ sub weaver {
 
   my @files = glob('weaver.*');
 
-  my $arg = { logger => $self };
+  my $arg = { root_config => { logger => $self } };
 
   if ($self->config_plugin) {
     my $assembler = Pod::Weaver::Config::Assembler->new;

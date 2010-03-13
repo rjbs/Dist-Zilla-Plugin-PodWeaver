@@ -4,7 +4,6 @@ use Moose;
 use Moose::Autobox;
 use List::MoreUtils qw(any);
 use Pod::Weaver 3.100710; # logging with proxies
-use Dist::Zilla::Role::FileMunger 1.100710; # logging with proxies
 with 'Dist::Zilla::Role::FileMunger';
 
 use namespace::autoclean;

@@ -44,9 +44,12 @@ this method in subclasses.
 sub weaver {
   my ($self) = @_;
 
-  my @files = glob('weaver.*');
+  my @files = glob($self->zilla->root->file('weaver.*'));
 
-  my $arg = { root_config => { logger => $self->logger } };
+  my $arg = {
+      root        => $self->zilla->root,
+      root_config => { logger => $self->logger },
+  };
 
   if ($self->config_plugin) {
     my $assembler = Pod::Weaver::Config::Assembler->new;

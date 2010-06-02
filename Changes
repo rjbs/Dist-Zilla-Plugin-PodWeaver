@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+          don't assume that cwd is the right directory for dist root (Florian
+          Ragwitz)
 
 3.100710  2010-03-12 10:07:39 America/New_York
 

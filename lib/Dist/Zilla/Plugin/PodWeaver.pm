@@ -4,7 +4,12 @@ use Moose;
 use Moose::Autobox;
 use List::MoreUtils qw(any);
 use Pod::Weaver 3.100710; # logging with proxies
-with 'Dist::Zilla::Role::FileMunger';
+with(
+  'Dist::Zilla::Role::FileMunger',
+  'Dist::Zilla::Role::FileFinderUser' => {
+    default_finders => [ ':InstallModules', ':ExecFiles' ],
+  },
+);
 
 use namespace::autoclean;
 
@@ -73,14 +78,16 @@ has config_plugin => (
   isa => 'Str',
 );
 
+sub munge_files {
+  my ($self) = @_;
+  
+  $self->munge_file($_) for @{ $self->found_files };
+} 
+
 sub munge_file {
   my ($self, $file) = @_;
 
   $self->log_debug([ 'weaving pod in %s', $file->name ]);
-
-  return
-    unless $file->name =~ /\.(?:pm|pod)$/i
-    and ($file->name !~ m{/} or $file->name =~ m{^lib/});
 
   $self->munge_pod($file);
   return;

@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+
+3.101640  2010-06-13 08:07:17 America/New_York
           fix a missing prereq and improve tests to show more information on
           failure to compile
 

@@ -15,5 +15,5 @@ for (@files) {
   ok(
     eval "require $_; 1",
     "loaded $_ with no problems",
-  );
+  ) or diag $@;
 }

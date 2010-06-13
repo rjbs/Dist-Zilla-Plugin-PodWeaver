@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+          fix a missing prereq and improve tests to show more information on
+          failure to compile
 
 3.101620  2010-06-11 20:30:13 America/New_York
           also weave ExecFiles; use FileFinderUser (rt #55870)

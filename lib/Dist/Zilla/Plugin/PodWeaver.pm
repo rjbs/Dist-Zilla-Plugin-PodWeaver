@@ -121,6 +121,7 @@ sub munge_pod {
       version  => $self->zilla->version,
       license  => $self->zilla->license,
       authors  => $self->zilla->authors,
+      distmeta => $self->zilla->distmeta,
     },
   );
 

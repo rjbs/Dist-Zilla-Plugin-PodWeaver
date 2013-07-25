@@ -2,6 +2,13 @@ Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
 
+3.101642  2013-07-25 14:05:58 America/Los_Angeles
+          pass the DZ logger to Pod::Weaver along correctly if weaver.ini exists
+
+          document use of FileFinderUser and the finder attribute
+
+          remove unused module loading, defer other loading until runtime
+
 3.101641  2010-10-14 22:55:42 America/New_York
           pass the DZ distmeta to the weaver as input (thanks, David Golden)
 

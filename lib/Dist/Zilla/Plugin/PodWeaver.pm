@@ -12,13 +12,6 @@ with(
 
 use namespace::autoclean;
 
-use PPI;
-use Pod::Elemental;
-use Pod::Elemental::Transformer::Pod5;
-use Pod::Elemental::Transformer::Nester;
-use Pod::Elemental::Selectors -all;
-use Pod::Weaver::Config::Assembler;
-
 =head1 DESCRIPTION
 
 [PodWeaver] is the bridge between L<Dist::Zilla> and L<Pod::Weaver>.  It rips
@@ -79,9 +72,13 @@ has config_plugin => (
 
 sub munge_files {
   my ($self) = @_;
-  
+
+  require PPI;
+  require Pod::Weaver;
+  require Pod::Weaver::Config::Assembler;
+
   $self->munge_file($_) for @{ $self->found_files };
-} 
+}
 
 sub munge_file {
   my ($self, $file) = @_;

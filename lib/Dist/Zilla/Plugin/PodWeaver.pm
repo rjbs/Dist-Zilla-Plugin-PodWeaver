@@ -59,7 +59,10 @@ sub weaver {
 
     return Pod::Weaver->new_from_config_sequence($assembler->sequence, $arg);
   } elsif (@files) {
-    return Pod::Weaver->new_from_config($arg);
+    return Pod::Weaver->new_from_config(
+      { root   => $self->zilla->root },
+      { logger => $self->logger },
+    );
   } else {
     return Pod::Weaver->new_with_default_config($arg);
   }

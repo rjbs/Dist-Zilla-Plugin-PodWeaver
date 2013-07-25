@@ -27,6 +27,16 @@ look for configuration in the current directory.
 
 Otherwise, it will use the default configuration.
 
+=attr finder
+
+[PodWeaver] is a L<Dist::Zilla::Role::FileFinderUser>.  The L<FileFinder> given
+for its C<finder> attribute is used to decide which files to munge.  By
+default, it will munge:
+
+=for :list
+* C<:InstallModules>
+* C<:ExecFiles>
+
 =method weaver
 
 This method returns the Pod::Weaver object to be used.  The current

@@ -1,7 +1,6 @@
 package Dist::Zilla::Plugin::PodWeaver;
 # ABSTRACT: weave your Pod together from configuration and Dist::Zilla
 use Moose;
-use Moose::Autobox;
 use List::MoreUtils qw(any);
 use Pod::Weaver 3.100710; # logging with proxies
 with(

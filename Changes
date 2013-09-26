@@ -1,7 +1,10 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+
+3.102000  2013-09-25 20:56:36 America/New_York
           include the plugin configuration details in x_Dist_Zilla metadata
+          (thanks, Karen Etheridge!)
 
 3.101642  2013-07-25 14:05:58 America/Los_Angeles
           pass the DZ logger to Pod::Weaver along correctly if weaver.ini exists

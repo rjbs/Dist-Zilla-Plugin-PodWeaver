@@ -83,6 +83,18 @@ has config_plugin => (
   isa => 'Str',
 );
 
+around dump_config => sub
+{
+  my ($orig, $self) = @_;
+  my $config = $self->$orig;
+
+  $config->{'' . __PACKAGE__} = {
+     $self->config_plugin ? ( config_plugin => $self->config_plugin ) : (),
+     finder => $self->finder,
+  };
+  return $config;
+};
+
 sub munge_files {
   my ($self) = @_;
 

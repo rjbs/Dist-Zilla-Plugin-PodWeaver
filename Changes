@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+          update to Pod::Weaver 4!
 
 3.102000  2013-09-25 20:56:36 America/New_York
           include the plugin configuration details in x_Dist_Zilla metadata

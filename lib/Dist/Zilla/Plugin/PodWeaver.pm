@@ -88,10 +88,22 @@ around dump_config => sub
   my ($orig, $self) = @_;
   my $config = $self->$orig;
 
-  $config->{'' . __PACKAGE__} = {
-     $self->config_plugin ? ( config_plugin => $self->config_plugin ) : (),
-     finder => $self->finder,
+  my $our = {
+    $self->config_plugin ? ( config_plugin => $self->config_plugin ) : (),
+    finder => $self->finder,
   };
+
+  $our->{plugins} = [];
+  for my $plugin (@{ $self->weaver->plugins }) {
+    push @{ $our->{plugins} }, {
+      class   => $plugin->meta->name,
+      name    => $plugin->plugin_name,
+      version => $plugin->VERSION,
+    };
+  }
+
+  $config->{'' . __PACKAGE__} = $our;
+
   return $config;
 };
 

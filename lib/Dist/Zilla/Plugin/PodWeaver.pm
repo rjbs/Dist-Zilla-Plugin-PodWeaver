@@ -20,7 +20,8 @@ apart your kinda-Pod and reconstructs it as boring old real Pod.
 =head1 CONFIGURATION
 
 If the C<config_plugin> attribute is given, it will be treated like a
-Pod::Weaver section heading.  For example, C<@Default> could be given.
+Pod::Weaver section heading.  For example, C<@Default> could be given.  I may
+be given multiple times.
 
 Otherwise, if a file matching C<./weaver.*> exists, Pod::Weaver will be told to
 look for configuration in the current directory.
@@ -58,14 +59,16 @@ sub weaver {
       root_config => { logger => $self->logger },
   };
 
-  if ($self->config_plugin) {
+  if ($self->has_config_plugins) {
     my $assembler = Pod::Weaver::Config::Assembler->new;
 
     my $root = $assembler->section_class->new({ name => '_' });
     $assembler->sequence->add_section($root);
 
-    $assembler->change_section( $self->config_plugin );
-    $assembler->end_section;
+    for my $header ($self->config_plugins) {
+      $assembler->change_section($header);
+      $assembler->end_section;
+    }
 
     return Pod::Weaver->new_from_config_sequence($assembler->sequence, $arg);
   } elsif (@files) {
@@ -78,9 +81,17 @@ sub weaver {
   }
 }
 
-has config_plugin => (
-  is  => 'ro',
-  isa => 'Str',
+
+sub mvp_aliases { return { config_plugin => 'config_plugins' } }
+sub mvp_multivalue_args { qw(config_plugins) }
+
+has config_plugins => (
+  isa => 'ArrayRef[Str]',
+  traits  => [ 'Array' ],
+  handles => {
+    config_plugins     => 'elements',
+    has_config_plugins => 'count',
+  },
 );
 
 around dump_config => sub
@@ -89,7 +100,9 @@ around dump_config => sub
   my $config = $self->$orig;
 
   my $our = {
-    $self->config_plugin ? ( config_plugin => $self->config_plugin ) : (),
+    $self->has_config_plugins
+      ? ( config_plugins => [ $self->config_plugins ] )
+      : (),
     finder => $self->finder,
   };
 

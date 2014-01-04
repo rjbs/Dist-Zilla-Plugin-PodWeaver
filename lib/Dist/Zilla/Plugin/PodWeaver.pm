@@ -88,6 +88,7 @@ sub mvp_multivalue_args { qw(config_plugins) }
 has config_plugins => (
   isa => 'ArrayRef[Str]',
   traits  => [ 'Array' ],
+  default => sub {  []  },
   handles => {
     config_plugins     => 'elements',
     has_config_plugins => 'count',
@@ -158,7 +159,7 @@ sub munge_perl_string {
 sub munge_pod {
   my ($self, $file) = @_;
 
-  my $content     = $file->content;
+  my $content     = $file->encoded_content;
   my $new_content = $self->munge_perl_string(
     $file->content,
     {

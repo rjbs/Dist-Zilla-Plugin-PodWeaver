@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
 
+4.003     2014-01-04 08:17:17 America/New_York
+          allow config_plugin to be given more than once
+
 4.002     2013-11-12 13:15:37 America/New_York
           add weaver config to plugin config dump
 

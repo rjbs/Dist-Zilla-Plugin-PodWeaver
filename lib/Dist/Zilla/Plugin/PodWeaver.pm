@@ -159,7 +159,6 @@ sub munge_perl_string {
 sub munge_pod {
   my ($self, $file) = @_;
 
-  my $content     = $file->encoded_content;
   my $new_content = $self->munge_perl_string(
     $file->content,
     {

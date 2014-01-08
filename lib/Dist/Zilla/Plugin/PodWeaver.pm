@@ -176,7 +176,7 @@ sub munge_pod {
   return;
 }
 
-with 'Pod::Elemental::PerlMunger';
+with 'Pod::Elemental::PerlMunger' => { -version => 0.100000 };
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

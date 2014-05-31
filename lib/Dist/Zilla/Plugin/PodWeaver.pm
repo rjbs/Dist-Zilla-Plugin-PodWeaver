@@ -74,7 +74,7 @@ sub weaver {
   } elsif (@files) {
     return Pod::Weaver->new_from_config(
       { root   => $self->zilla->root },
-      { logger => $self->logger },
+      { root_config => { logger => $self->logger } },
     );
   } else {
     return Pod::Weaver->new_with_default_config($arg);

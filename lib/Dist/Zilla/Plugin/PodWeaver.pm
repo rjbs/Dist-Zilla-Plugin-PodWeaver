@@ -21,7 +21,7 @@ apart your kinda-Pod and reconstructs it as boring old real Pod.
 =head1 CONFIGURATION
 
 If the C<config_plugin> attribute is given, it will be treated like a
-Pod::Weaver section heading.  For example, C<@Default> could be given.  I may
+Pod::Weaver section heading.  For example, C<@Default> could be given.  It may
 be given multiple times.
 
 Otherwise, if a file matching C<./weaver.*> exists, Pod::Weaver will be told to

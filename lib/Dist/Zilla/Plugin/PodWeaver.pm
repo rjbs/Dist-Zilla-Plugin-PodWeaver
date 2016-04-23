@@ -53,10 +53,12 @@ this method in subclasses.
 sub weaver {
   my ($self) = @_;
 
-  my @files = glob($self->zilla->root->file('weaver.*'));
+  my $root = $self->zilla->root->stringify;
+
+  my @files = glob("$root/weaver.*");
 
   my $arg = {
-      root        => $self->zilla->root,
+      root        => $root,
       root_config => { logger => $self->logger },
   };
 
@@ -74,7 +76,7 @@ sub weaver {
     return Pod::Weaver->new_from_config_sequence($assembler->sequence, $arg);
   } elsif (@files) {
     return Pod::Weaver->new_from_config(
-      { root   => $self->zilla->root },
+      { root   => $root },
       { root_config => { logger => $self->logger } },
     );
   } else {

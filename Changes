@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+        - cope with both Dist::Zilla v5 and v6
 
 4.006     2014-08-16 08:29:38-04:00 America/New_York
         - correctly pass logger to weaver (thanks, Yasutaka ATARASHI)

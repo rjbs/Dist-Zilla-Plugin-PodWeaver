@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+
+4.007     2016-04-23 18:35:29+01:00 Europe/London
         - cope with both Dist::Zilla v5 and v6
 
 4.006     2014-08-16 08:29:38-04:00 America/New_York

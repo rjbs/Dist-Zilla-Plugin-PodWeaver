@@ -4,6 +4,7 @@ package Dist::Zilla::Plugin::PodWeaver;
 use Moose;
 use List::MoreUtils qw(any);
 use Pod::Weaver 3.100710; # logging with proxies
+use Path::Tiny;
 with(
   'Dist::Zilla::Role::FileMunger',
   'Dist::Zilla::Role::FileFinderUser' => {
@@ -53,7 +54,7 @@ this method in subclasses.
 sub weaver {
   my ($self) = @_;
 
-  my @files = glob($self->zilla->root->file('weaver.*'));
+  my @files = glob(path($self->zilla->root)->child('weaver.*'));
 
   my $arg = {
       root        => $self->zilla->root,

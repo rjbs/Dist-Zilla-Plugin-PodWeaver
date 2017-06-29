@@ -30,7 +30,8 @@ Otherwise, it will use the default configuration.
 
 =attr finder
 
-[PodWeaver] is a L<Dist::Zilla::Role::FileFinderUser>.  The L<FileFinder> given
+[PodWeaver] is a L<Dist::Zilla::Role::FileFinderUser>.  The
+L<FileFinder|Dist::Zilla::Role::FileFinder> given
 for its C<finder> attribute is used to decide which files to munge.  By
 default, it will munge:
 

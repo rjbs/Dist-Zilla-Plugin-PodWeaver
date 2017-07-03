@@ -6,7 +6,14 @@ use Pod::Weaver 3.100710; # logging with proxies
 with(
   'Dist::Zilla::Role::FileMunger',
   'Dist::Zilla::Role::FileFinderUser' => {
-    default_finders => [ ':InstallModules', ':ExecFiles' ],
+    default_finders => [
+      ':InstallModules',
+      (
+        eval { Dist::Zilla::Dist::Builder->VERSION('5.038'); 1 }
+             ? ':PerlExecFiles'
+             : ':ExecFiles'
+      )
+    ],
   },
 );
 
@@ -36,7 +43,7 @@ default, it will munge:
 
 =for :list
 * C<:InstallModules>
-* C<:ExecFiles>
+* C<:PerlExecFiles> (when available; otherwise C<:ExecFiles>)
 
 =method weaver
 

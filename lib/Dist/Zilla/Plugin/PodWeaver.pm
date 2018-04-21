@@ -164,12 +164,12 @@ sub munge_pod {
   my $new_content = $self->munge_perl_string(
     $file->content,
     {
-      zilla    => $self->zilla,
-      filename => $file->name,
-      version  => $self->zilla->version,
-      license  => $self->zilla->license,
-      authors  => $self->zilla->authors,
-      distmeta => $self->zilla->distmeta,
+      zilla    => scalar $self->zilla,
+      filename => scalar $file->name,
+      version  => scalar $self->zilla->version,
+      license  => scalar $self->zilla->license,
+      authors  => scalar $self->zilla->authors,
+      distmeta => scalar $self->zilla->distmeta,
     },
   );
 

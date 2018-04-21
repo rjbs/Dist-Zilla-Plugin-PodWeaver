@@ -161,6 +161,9 @@ sub munge_perl_string {
 sub munge_pod {
   my ($self, $file) = @_;
 
+  my @authors = $self->zilla->authors;
+  @authors = @{ $authors[0] } if @authors == 1 && ref $authors[0];
+
   my $new_content = $self->munge_perl_string(
     $file->content,
     {
@@ -168,7 +171,7 @@ sub munge_pod {
       filename => scalar $file->name,
       version  => scalar $self->zilla->version,
       license  => scalar $self->zilla->license,
-      authors  => scalar $self->zilla->authors,
+      authors  => \@authors,
       distmeta => scalar $self->zilla->distmeta,
     },
   );

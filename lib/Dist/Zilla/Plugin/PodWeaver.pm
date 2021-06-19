@@ -3,12 +3,18 @@ package Dist::Zilla::Plugin::PodWeaver;
 
 use Moose;
 use Pod::Weaver 3.100710; # logging with proxies
-with(
-  'Dist::Zilla::Role::FileMunger',
-  'Dist::Zilla::Role::FileFinderUser' => {
-    default_finders => [ ':InstallModules', ':ExecFiles' ],
-  },
-);
+with 'Dist::Zilla::Role::FileMunger',
+     'Dist::Zilla::Role::FileFinderUser' => {
+       default_finders => [ ':InstallModules', ':ExecFiles' ],
+     };
+
+# BEGIN BOILERPLATE
+use v5.20.0;
+use warnings;
+use utf8;
+no feature 'switch';
+use experimental qw(postderef postderef_qq); # This experiment gets mainlined.
+# END BOILERPLATE
 
 use namespace::autoclean;
 
@@ -110,8 +116,8 @@ around dump_config => sub
   };
 
   $our->{plugins} = [];
-  for my $plugin (@{ $self->weaver->plugins }) {
-    push @{ $our->{plugins} }, {
+  for my $plugin ($self->weaver->plugins->@*) {
+    push $our->{plugins}->@*, {
       class   => $plugin->meta->name,
       name    => $plugin->plugin_name,
       version => $plugin->VERSION,
@@ -130,7 +136,7 @@ sub munge_files {
   require Pod::Weaver;
   require Pod::Weaver::Config::Assembler;
 
-  $self->munge_file($_) for @{ $self->found_files };
+  $self->munge_file($_) for $self->found_files->@*;
 }
 
 sub munge_file {
@@ -162,7 +168,7 @@ sub munge_pod {
   my ($self, $file) = @_;
 
   my @authors = $self->zilla->authors;
-  @authors = @{ $authors[0] } if @authors == 1 && ref $authors[0];
+  @authors = $authors[0]->@* if @authors == 1 && ref $authors[0];
 
   my $new_content = $self->munge_perl_string(
     $file->content,

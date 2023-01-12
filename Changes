@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PodWeaver
 
 {{$NEXT}}
+
+4.010     2023-01-11 21:37:17-05:00 America/New_York
         - plugins now requires Dist::Zilla v6
         - update distribution metadata
         - By default, will munge :PerlExecFiles instead of :ExecFiles.  I do

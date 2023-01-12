@@ -5,7 +5,7 @@ use Moose;
 use Pod::Weaver 3.100710; # logging with proxies
 with 'Dist::Zilla::Role::FileMunger',
      'Dist::Zilla::Role::FileFinderUser' => {
-       default_finders => [ ':InstallModules', ':ExecFiles' ],
+       default_finders => [ ':InstallModules', ':PerlExecFiles' ],
      };
 
 # BEGIN BOILERPLATE
